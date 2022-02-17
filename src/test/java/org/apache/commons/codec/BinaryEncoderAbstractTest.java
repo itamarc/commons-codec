@@ -17,9 +17,10 @@
 
 package org.apache.commons.codec;
 
-import static org.junit.Assert.fail;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  */
@@ -34,13 +35,8 @@ public abstract class BinaryEncoderAbstractTest {
     }
 
     @Test
-    public void testEncodeNull() throws Exception {
+    public void testEncodeNull() {
         final BinaryEncoder encoder = makeEncoder();
-        try {
-            encoder.encode(null);
-            fail("EncoderException exptected");
-        } catch (final EncoderException ee) {
-            // An exception should be thrown
-        }
+        assertThrows(EncoderException.class, () -> { encoder.encode(null); });
     }
 }

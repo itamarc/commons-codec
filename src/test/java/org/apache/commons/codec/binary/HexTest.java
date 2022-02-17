@@ -17,12 +17,6 @@
 
 package org.apache.commons.codec.binary;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -32,8 +26,9 @@ import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.EncoderException;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests {@link org.apache.commons.codec.binary.Hex}.
@@ -207,9 +202,11 @@ public class HexTest {
         assertEquals(name, sourceString, actualStringFromBytes);
     }
 
-    @Test(expected = UnsupportedCharsetException.class)
+    @Test
     public void testCustomCharsetBadName() {
-        new Hex(BAD_ENCODING_NAME);
+        assertThrows(UnsupportedCharsetException.class, () -> {
+            new Hex(BAD_ENCODING_NAME);
+        });
     }
 
     @Test
@@ -333,16 +330,20 @@ public class HexTest {
         checkDecodeHexCharArrayOddCharacters(new char[] { 'A', 'B', 'C', 'D', 'E' });
     }
 
-    @Test(expected = DecoderException.class)
+    @Test
     public void testDecodeHexCharArrayOutBufferUnderSized() throws DecoderException {
         final byte[] out = new byte[4];
-        Hex.decodeHex("aabbccddeeff".toCharArray(), out, 0);
+        assertThrows(DecoderException.class, () -> {
+            Hex.decodeHex("aabbccddeeff".toCharArray(), out, 0);
+        });
     }
 
-    @Test(expected = DecoderException.class)
+    @Test
     public void testDecodeHexCharArrayOutBufferUnderSizedByOffset() throws DecoderException {
         final byte[] out = new byte[6];
-        Hex.decodeHex("aabbccddeeff".toCharArray(), out, 1);
+        assertThrows(DecoderException.class, () -> {
+            Hex.decodeHex("aabbccddeeff".toCharArray(), out, 1);
+        });
     }
 
     @Test
@@ -599,20 +600,25 @@ public class HexTest {
         assertArrayEquals("64".toCharArray(), hex);
     }
 
-    @Test(expected=ArrayIndexOutOfBoundsException.class)
+    @Test
     public void testEncodeHexPartialInputUnderbounds() {
         final byte data[] = "hello world".getBytes(StandardCharsets.UTF_8);
-
-        final char[] hex = Hex.encodeHex(data, -2, 10, true);
-        assertArrayEquals("64".toCharArray(), hex);
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+                    final char[] hex = Hex.encodeHex(data, -2, 10, true);
+                });
+        // TODO If the line above throws an exception, the code should never come here. Remove?
+        // assertArrayEquals("64".toCharArray(), hex);
     }
 
-    @Test(expected=ArrayIndexOutOfBoundsException.class)
+    @Test
     public void testEncodeHexPartialInputOverbounds() {
         final byte data[] = "hello world".getBytes(StandardCharsets.UTF_8);
 
-        final char[] hex = Hex.encodeHex(data, 9, 10, true);
-        assertArrayEquals("64".toCharArray(), hex);
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+                    final char[] hex = Hex.encodeHex(data, 9, 10, true);
+                });
+        // TODO If the line above throws an exception, the code should never come here. Remove?
+        // assertArrayEquals("64".toCharArray(), hex);
     }
 
     @Test
@@ -702,12 +708,12 @@ public class HexTest {
 
     @Test
     public void testGetCharset() {
-        Assert.assertEquals(StandardCharsets.UTF_8, new Hex(StandardCharsets.UTF_8).getCharset());
+        assertEquals(StandardCharsets.UTF_8, new Hex(StandardCharsets.UTF_8).getCharset());
     }
 
     @Test
     public void testGetCharsetName() {
-        Assert.assertEquals(StandardCharsets.UTF_8.name(), new Hex(StandardCharsets.UTF_8).getCharsetName());
+        assertEquals(StandardCharsets.UTF_8.name(), new Hex(StandardCharsets.UTF_8).getCharsetName());
     }
 
     @Test
