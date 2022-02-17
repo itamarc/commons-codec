@@ -102,7 +102,7 @@ public class Base64Test {
         String encodedContent;
         byte[] encodedBytes = Base64.encodeBase64(StringUtils.getBytesUtf8(content));
         encodedContent = StringUtils.newStringUtf8(encodedBytes);
-        assertEquals("encoding hello world", "SGVsbG8gV29ybGQ=", encodedContent);
+        assertEquals("SGVsbG8gV29ybGQ=", encodedContent, "encoding hello world");
 
         Base64 b64 = new Base64(BaseNCodec.MIME_CHUNK_SIZE, null); // null
                                                                     // lineSeparator

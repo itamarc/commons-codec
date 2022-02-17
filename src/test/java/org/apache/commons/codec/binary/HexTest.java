@@ -187,19 +187,19 @@ public class HexTest {
         assertArrayEquals(expectedHexStringBytes, actualEncodedBytes);
         // test 2
         String actualStringFromBytes = new String(actualEncodedBytes, name);
-        assertEquals(name + ", expectedHexString=" + expectedHexString + ", actualStringFromBytes=" +
-                actualStringFromBytes, expectedHexString, actualStringFromBytes);
+        assertEquals(expectedHexString, actualStringFromBytes, name + ", expectedHexString=" +
+                expectedHexString + ", actualStringFromBytes=" + actualStringFromBytes);
         // second test:
         final Hex utf8Codec = new Hex();
         expectedHexString = "48656c6c6f20576f726c64";
         final byte[] decodedUtf8Bytes = (byte[]) utf8Codec.decode(expectedHexString);
         actualStringFromBytes = new String(decodedUtf8Bytes, utf8Codec.getCharset());
         // sanity check:
-        assertEquals(name, sourceString, actualStringFromBytes);
+        assertEquals(sourceString, actualStringFromBytes, name);
         // actual check:
         final byte[] decodedCustomBytes = customCodec.decode(actualEncodedBytes);
         actualStringFromBytes = new String(decodedCustomBytes, name);
-        assertEquals(name, sourceString, actualStringFromBytes);
+        assertEquals(sourceString, actualStringFromBytes, name);
     }
 
     @Test
